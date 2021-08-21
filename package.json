@@ -1,0 +1,25 @@
+{
+  "name": "team-profile-generator",
+  "version": "1.0.0",
+  "description": "Team Profile Generator",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hsengu/team-profile-generator.git"
+  },
+  "author": "Hok S. Uy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hsengu/team-profile-generator/issues"
+  },
+  "homepage": "https://github.com/hsengu/team-profile-generator#readme",
+  "dependencies": {
+    "inquirer": "^8.1.2"
+  }
+}
