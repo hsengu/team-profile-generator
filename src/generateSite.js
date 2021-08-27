@@ -28,7 +28,7 @@ const copyFile = () => {
             fs.mkdirSync(outputCopyDir, { recursive: true });
         }
 
-        fs.copyFile(`${outputCopyDir}/index.css`, './dist/index.css', err => {
+        fs.copyFile('./src/css/index.css', `${outputCopyDir}/index.css`, err => {
             if(err) {
                 reject(err)
                 return;
