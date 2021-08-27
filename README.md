@@ -35,7 +35,7 @@ See a preview of this application in action [here](https://drive.google.com/file
 ## Screenshot
 ![Screenshot](./assets/Screenshots/Screenshot.jpg)
 
-## Contributing to Readme Generator
+## Contributing to Team Profile Generator
 Please follow contribution guidelines at the [Contributor Covenant](https://www.contributor-covenant.org/version/2/1/code_of_conduct/) to contribute to Readme Generator.
 
 ## Tests
