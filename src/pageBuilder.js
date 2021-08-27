@@ -1,7 +1,9 @@
-const fs = require('fs');
+const Manager = require('../lib/Manager');
+const Engineer = require('../lib/Engineer');
+const Intern = require('../lib/Intern');
 
 const generatePage = employeeList => {
-    return `
+    let page = `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -23,7 +25,7 @@ const generatePage = employeeList => {
         <main role="main" class="container">
             <div class="container">
                 <div class="row justify-content-center">
-                    ${employeeList.forEach(employee => cardBuilder(employee))}
+                    ${employeeList.map(employee => cardBuilder(employee)).join('')}
                 </div>
             </div>
         </main>
@@ -35,42 +37,45 @@ const generatePage = employeeList => {
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
     </body>
     </html>
-    `
+    `;
+
+    return page;
 };
 
-const cardBuilder = function(employee) {
-    let role = employee.getRole;
-    let badge = '';
-    let listItem = '';
+const cardBuilder = employee => {
+        let role = employee.getRole().toLowerCase();
+        let badge = '';
+        let listItem = '';
 
-    switch(role) {
-        case 'manager': badge = 'fas fa-mug-hot';
-                        listItem = `Office Number: ${employee.officeNumber}`;
+        switch(role) {
+            case 'manager': badge = 'fas fa-mug-hot';
+                            listItem = `Office Number: ${employee.officeNumber}`;
+                            break;
+            case 'engineer': badge = 'fas fa-laptop-code';
+                            listItem = `<a href="https://github.com/${employee.getGithub()}">GitHub: ${employee.getGithub()}</a>`;
+                            break;
+            case 'intern': badge = 'fas fa-laptop-code';
+                        listItem = `School: ${employee.getSchool()}`;
                         break;
-        case 'engineer': badge = 'fas fa-laptop-code';
-                         listItem = `<a href="https://github.com/${employee.getGithub}">GitHub: ${employee.get}</a>`;
-                         break;
-        case 'intern': badge = 'fas fa-laptop-code';
-                       listItem = `School: ${employee.getSchool}`;
-                       break;
-    }
-    let result = `
-    <div class="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
-        <div class="card w-100">
-            <div class="card-header ${role}-header">
-                <h5 class="card-title">${employee.getName}</h5>
-                <h6 class="card-subtitle text-muted"><i class="${badge}"></i> ${role}</h6>
+        }
+
+        let result = `
+        <div class="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
+            <div class="card w-100">
+                <div class="card-header ${role}-header">
+                    <h5 class="card-title">${employee.getName()}</h5>
+                    <h6 class="card-subtitle text-muted"><i class="${badge}"></i> ${employee.getRole()}</h6>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">ID: ${employee.getId()}</li>
+                    <li class="list-group-item">E-mail: <a href="mailto:${employee.getEmail()}">${employee.getEmail()}</a></li>
+                    <li class="list-group-item">${listItem}</li>
+                </ul>
             </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">ID: ${employee.getId}</li>
-                <li class="list-group-item">E-mail: <a href="mailto:${employee.getEmail}">${employee.getEmail}</a></li>
-                <li class="list-group-item">${listItem}</li>
-            </ul>
         </div>
-    </div>
-`;
-    
+    `;
+
     return result;
 }
 
-module.exports = this.generatePage;
+module.exports = generatePage;
