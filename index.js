@@ -6,13 +6,14 @@ const pageBuilder = require('./src/pageBuilder.js');
 const {writeFile, copyFile} = require('./src/generateSite.js');
 let id = 1;
 
+// Main prompt function for the application
 const prompt = () => {
     console.log(`
 ======================
 Team Profile Generator
 ======================    
 `)
-    
+    // Prompts for manager information and returns an array of Employee objects.
     return inquirer.prompt([
         {
             type: 'text',
@@ -49,14 +50,15 @@ Team Profile Generator
             }
         }
     ]).then(({managerName, managerEmail, managerOffice}) => {
-        let employeeList = [];
-        let manager = new Manager(managerName, id++, managerEmail, managerOffice);
-        employeeList.push(manager);
-        console.log(`Manager ${managerName} added to the employee list.\n`);
-        return employeeList;
+        let employeeList = [];                                                                  // Create a list of employees
+        let manager = new Manager(managerName, id++, managerEmail, managerOffice);              // Create a manager obect
+        employeeList.push(manager);                                                             // Add manager to the employee list
+        console.log(`Manager ${managerName} added to the employee list.\n`);                    // Output outcome to console
+        return employeeList;                                                                    // Return list as a promise
     })
 };
 
+// Prompt for checking what the user would like to do next.
 const promptActions = employeeList => {
     return inquirer.prompt({
         type: 'list',
@@ -65,15 +67,16 @@ const promptActions = employeeList => {
         choices: ['Add a new engineer', 'Add a new intern', 'Exit application and build page']
     }).then(({action}) => {
         if(action.includes('engineer')) {
-            return getEngineer(employeeList);
+            return getEngineer(employeeList);               // If the user chose add an engineer calls getEngineer prompt.
         } else if(action.includes('intern')) {
-            return getIntern(employeeList);
+            return getIntern(employeeList);                 // If the user chose add an intern calls getIntern prompt.
         } else {
-            return employeeList;
+            return employeeList;                            // If the user chooses to exit the application, return the built employee list.
         }
     })
 };
 
+// Prompt for getting an enginner's information
 const getEngineer = employeeList => {
     return inquirer.prompt([
         {
@@ -109,13 +112,14 @@ const getEngineer = employeeList => {
             }
         }
     ]).then(({engineerName, engineerEmail, engineerGithub}) => {
-        let engineer = new Engineer(engineerName, id++, engineerEmail, engineerGithub);
-        employeeList.push(engineer);
-        console.log(`\nNew engineer ${engineerName} has been added to the employee list.\n`);
-        return promptActions(employeeList);
+        let engineer = new Engineer(engineerName, id++, engineerEmail, engineerGithub);                 // Build a new engineer object with the user input information
+        employeeList.push(engineer);                                                                    // Push the object to the employee list
+        console.log(`\nNew engineer ${engineerName} has been added to the employee list.\n`);           // Output outcome to console
+        return promptActions(employeeList);                                                             // Return the list as a promise
     })
 };
 
+// Prompt for getting an enginner's information
 const getIntern = employeeList => {
     return inquirer.prompt([
         {
@@ -151,27 +155,26 @@ const getIntern = employeeList => {
             }
         }
     ]).then(({internName, internEmail, internSchool}) => {
-        let intern = new Intern(internName, id++, internEmail, internSchool);
-        employeeList.push(intern);
-        console.log(`\nNew intern ${internName} has been added to the employee list.\n`);
-        return promptActions(employeeList);
+        let intern = new Intern(internName, id++, internEmail, internSchool);                       // Build an intern object with the user input information.
+        employeeList.push(intern);                                                                  // Push the object to the employeeList
+        console.log(`\nNew intern ${internName} has been added to the employee list.\n`);           // Output outcome to console
+        return promptActions(employeeList);                                                         // Return the list as a promise.
     })
 };
 
-const exit = () => {
-    return employeeList;
-}
-
+// Helper function for checking if a valid email is input
 const isValidEmail = email => {
-    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return email.match(emailRegex) ? true : false;
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;        // RegEx pattern for checking most types of emails
+    return email.match(emailRegex) ? true : false;                  // If pattern matches return true, false if not
 };
 
+// Helper function for checking if a valid office number is input
 const isValidOfficeNumber = phone => {
-    const phoneRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
-    return phone.match(phoneRegex) ? true : false;
+    const phoneRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;     // RegEx pattern for checking common phone formats
+    return phone.match(phoneRegex) ? true : false;                              // If pattern matches return true, false if not
 };
 
+// Main init function, sets off the whole process.
 const init = function() {
     prompt().then(promptActions)
             .then(employeeList => pageBuilder(employeeList))
@@ -185,4 +188,5 @@ const init = function() {
                 
 };
 
+// Call init
 init();

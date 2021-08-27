@@ -2,6 +2,7 @@ const Manager = require('../lib/Manager');
 const Engineer = require('../lib/Engineer');
 const Intern = require('../lib/Intern');
 
+// Function to generate the HTML that will go into the HTML file
 const generatePage = employeeList => {
     let page = `
     <!DOCTYPE html>
@@ -42,6 +43,7 @@ const generatePage = employeeList => {
     return page;
 };
 
+// Function for building employee card elements
 const cardBuilder = employee => {
         let role = employee.getRole().toLowerCase();
         let badge = '';
@@ -78,4 +80,5 @@ const cardBuilder = employee => {
     return result;
 }
 
+// Export the generatePage function
 module.exports = generatePage;
