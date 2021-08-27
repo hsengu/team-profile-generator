@@ -1,4 +1,4 @@
-const fs = required('fs');
+const fs = require('fs');
 
 const generatePage = employeeList => {
     return `
