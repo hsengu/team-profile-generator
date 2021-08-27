@@ -7,7 +7,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "npm test"
+    "start": "node index.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   },
   "homepage": "https://github.com/hsengu/team-profile-generator#readme",
   "dependencies": {
-    "inquirer": "^8.1.2"
+    "inquirer": "^8.1.2",
+    "jest": "^27.0.6"
   }
 }
