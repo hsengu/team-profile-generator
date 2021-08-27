@@ -52,7 +52,7 @@ const cardBuilder = employee => {
                             listItem = `Office Number: ${employee.officeNumber}`;
                             break;
             case 'engineer': badge = 'fas fa-laptop-code';
-                            listItem = `<a href="https://github.com/${employee.getGithub()}">GitHub: ${employee.getGithub()}</a>`;
+                            listItem = `GitHub: <a href="https://github.com/${employee.getGithub()}">${employee.getGithub()}</a>`;
                             break;
             case 'intern': badge = 'fas fa-laptop-code';
                         listItem = `School: ${employee.getSchool()}`;

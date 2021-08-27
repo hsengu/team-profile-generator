@@ -13,7 +13,7 @@ main {
 
 .card {
     min-width: 16rem;
-    margin-top: 15px;
+    margin: 15px 0px;
 }
 
 .card a {
