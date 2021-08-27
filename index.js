@@ -4,7 +4,6 @@ const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const pageBuilder = require('./src/pageBuilder.js');
 const {writeFile, copyFile} = require('./src/generateSite.js');
-let id = 1;
 
 // Main prompt function for the application
 const prompt = () => {
@@ -23,6 +22,21 @@ Team Profile Generator
                 if(!managerNameInput)
                     console.log('\nYou must enter a name!');
                 return managerNameInput !== '';
+            }
+        },
+        {
+            type: 'text',
+            name: 'managerId',
+            message: "What is the manager's ID number? (Required)",
+            validate: managerIdInput => {
+                if(!managerIdInput)
+                    console.log('\nYou must enter an ID number!');
+                let valid = isValidId(managerIdInput, null);
+                if(valid === 1)
+                    console.log('\nEntered input is not a valid ID number, please enter only numbers!');
+                else if(valid === 2)
+                    console.log('\nThis ID already exists for another employee, you must enter a unique ID number!');
+                return (valid === -1) ? true : false;
             }
         },
         {
@@ -49,9 +63,9 @@ Team Profile Generator
                 return isValidOfficeNumber(managerOfficeInput);
             }
         }
-    ]).then(({managerName, managerEmail, managerOffice}) => {
+    ]).then(({managerName, managerId, managerEmail, managerOffice}) => {
         let employeeList = [];                                                                  // Create a list of employees
-        let manager = new Manager(managerName, id++, managerEmail, managerOffice);              // Create a manager obect
+        let manager = new Manager(managerName, managerId, managerEmail, managerOffice);              // Create a manager obect
         employeeList.push(manager);                                                             // Add manager to the employee list
         console.log(`Manager ${managerName} added to the employee list.\n`);                    // Output outcome to console
         return employeeList;                                                                    // Return list as a promise
@@ -91,6 +105,21 @@ const getEngineer = employeeList => {
         },
         {
             type: 'text',
+            name: 'engineerId',
+            message: "What is the engineer's ID number? (Required)",
+            validate: engineerIdInput => {
+                if(!engineerIdInput)
+                    console.log('\nYou must enter an ID number!');
+                let valid = isValidId(engineerIdInput, employeeList);
+                if(valid === 1)
+                    console.log('\nEntered input is not a valid ID number, please enter only numbers!');
+                else if(valid === 2)
+                    console.log('\nThis ID already exists for another employee, you must enter a unique ID number!');
+                return (valid === -1) ? true : false;
+            }
+        },
+        {
+            type: 'text',
             name: 'engineerEmail',
             message: "What is the engineer's email address? (Required)",
             validate: engineerEmailInput => {
@@ -111,8 +140,8 @@ const getEngineer = employeeList => {
                     return engineerGithubInput !== '';
             }
         }
-    ]).then(({engineerName, engineerEmail, engineerGithub}) => {
-        let engineer = new Engineer(engineerName, id++, engineerEmail, engineerGithub);                 // Build a new engineer object with the user input information
+    ]).then(({engineerName, engineerId, engineerEmail, engineerGithub}) => {
+        let engineer = new Engineer(engineerName, engineerId, engineerEmail, engineerGithub);                 // Build a new engineer object with the user input information
         employeeList.push(engineer);                                                                    // Push the object to the employee list
         console.log(`\nNew engineer ${engineerName} has been added to the employee list.\n`);           // Output outcome to console
         return promptActions(employeeList);                                                             // Return the list as a promise
@@ -130,6 +159,21 @@ const getIntern = employeeList => {
                 if(!internNameInput)
                     console.log('\nYou must enter a name!');
                 return internNameInput !== '';
+            }
+        },
+        {
+            type: 'text',
+            name: 'internId',
+            message: "What is the intern's ID number? (Required)",
+            validate: internIdInput => {
+                if(!internIdInput)
+                    console.log('\nYou must enter an ID number!');
+                let valid = isValidId(internIdInput, employeeList);
+                if(valid === 1)
+                    console.log('\nEntered input is not a valid ID number, please enter only numbers!');
+                else if(valid === 2)
+                    console.log('\nThis ID already exists for another employee, you must enter a unique ID number!');
+                return (valid === -1) ? true : false;
             }
         },
         {
@@ -154,13 +198,25 @@ const getIntern = employeeList => {
                     return internSchoolInput !== '';
             }
         }
-    ]).then(({internName, internEmail, internSchool}) => {
-        let intern = new Intern(internName, id++, internEmail, internSchool);                       // Build an intern object with the user input information.
+    ]).then(({internName, internId, internEmail, internSchool}) => {
+        let intern = new Intern(internName, internId, internEmail, internSchool);                       // Build an intern object with the user input information.
         employeeList.push(intern);                                                                  // Push the object to the employeeList
         console.log(`\nNew intern ${internName} has been added to the employee list.\n`);           // Output outcome to console
         return promptActions(employeeList);                                                         // Return the list as a promise.
     })
 };
+
+// Help function for checking if an ID is valid
+const isValidId = (id, employeeList) => {
+    let valid = -1;
+
+    if(isNaN(id))                                                       // Check if the id is a number
+        valid = 1;
+    if(employeeList && (employeeList.find(employee => employee.getId() === id.toString())))        // Check if the id already exists
+        valid = 2;
+
+    return valid;
+}
 
 // Helper function for checking if a valid email is input
 const isValidEmail = email => {

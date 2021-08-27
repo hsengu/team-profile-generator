@@ -16,7 +16,7 @@
 ## Description
 This project is a Node.js application that runs in a shell that takes user input to generate a team profile in HTML. The application accepts user input to generate a Manager, Engineers, and Interns and created an HTML page to display the output.
 
-See a preview of this application in action [here](https://drive.google.com/file/d/1mTa9NARJtVauzKEE-gLdHiSqgX7dgJDO/view?usp=sharing).
+See a preview of this application in action [here](https://drive.google.com/file/d/1p-C6sNkn8U5RVqPYREYDdxFSt_PmO2xr/view?usp=sharing).
 
 ## Built With
 - Node.js
